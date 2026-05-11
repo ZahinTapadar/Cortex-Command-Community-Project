@@ -43,6 +43,10 @@ if compiler.get_argument_syntax()== 'gcc' # used for gcc compatible compilers
 
   # Set preprocessor flags and cpp arguments according to build options
   buildtype_debug = get_option('debug')
+
+  # Enable std::auto_ptr for luabind compatibility (needed for C++17/C++20)
+  extra_args += ['-D_HAS_AUTO_PTR_ETC=1']
+
   if buildtype_debug
 
     extra_args += ['-Wno-write-strings', '-Wno-unknown-pragmas', '-Wno-deprecated-declarations', '-Wno-misleading-indentation'] # Disable #pragma region complaints and luabind auto_ptr warning
