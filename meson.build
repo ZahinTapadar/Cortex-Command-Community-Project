@@ -45,11 +45,14 @@ if compiler.get_argument_syntax()== 'gcc' # used for gcc compatible compilers
   buildtype_debug = get_option('debug')
 
   # Enable std::auto_ptr for luabind compatibility (needed for C++17/C++20)
-  extra_args += ['-D_HAS_AUTO_PTR_ETC=1']
+  add_global_arguments(['-D_HAS_AUTO_PTR_ETC=1'], language:'cpp')
+  if host_machine.system()=='darwin'
+    add_global_arguments(['-D_LIBCPP_ENABLE_CXX17_REMOVED_FEATURES'], language:'cpp')
+  endif
 
   if buildtype_debug
 
-    extra_args += ['-Wno-write-strings', '-Wno-unknown-pragmas', '-Wno-deprecated-declarations', '-Wno-misleading-indentation'] # Disable #pragma region complaints and luabind auto_ptr warning
+    extra_args += ['-Wno-write-strings', '-Wno-unknown-pragmas', '-Wno-deprecated-declarations', '-Wno-misleading-indentation'] # Disable #pragma region complaints
 
     if get_option('sane_warnings')
       extra_args += ['-Wno-sign-compare', '-Wno-non-virtual-dtor', '-Wno-parentheses', '-Wno-overloaded-virtual', '-Wno-unused-variable', '-Wno-unused-function']
